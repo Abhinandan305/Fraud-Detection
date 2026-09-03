@@ -1,0 +1,6 @@
+__pycache__/
+.ipynb_checkpoints/
+.vscode/
+.claude/
+*.pyc
+data/credit_card_fraud.csv
