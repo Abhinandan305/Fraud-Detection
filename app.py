@@ -45,18 +45,19 @@ st.sidebar.header("Transaction Details")
 
 def user_input_features():
     # Time and Amount
+    st.sidebar.subheader("Primary Details")
     time = st.sidebar.number_input("Transaction Time (seconds)", min_value=0, max_value=172792, value=0)
     amount = st.sidebar.number_input("Transaction Amount ($)", min_value=0.0, max_value=100000.0, value=10.0)
 
-    # V1-V28
-    v_features = {}
-    st.sidebar.subheader("PCA Features (V1-V28)")
+    # V1-V28 in an expander to reduce clutter
+    with st.sidebar.expander("⚙️ Advanced Settings (PCA Features)"):
+        st.markdown("""
+        *These features (V1-V28) are anonymized system components generated via Principal Component Analysis (PCA).
+        In a real app, these are calculated automatically from raw data.*
+        """)
 
-    # To avoid too many inputs, we use columns for V features
-    cols = st.sidebar.columns(2)
-    for i in range(1, 29):
-        col_idx = (i - 1) % 2
-        with cols[col_idx]:
+        v_features = {}
+        for i in range(1, 29):
             v_features[f'V{i}'] = st.number_input(f'V{i}', value=0.0, format="%.4f")
 
     # Combine into a DataFrame
