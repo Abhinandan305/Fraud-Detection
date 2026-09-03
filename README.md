@@ -20,7 +20,7 @@ fraud_detection_project/
 
 ### 1. Clone the Repository
 ```bash
-git clone <https://github.com/Abhinandan305/Fraud-Detection>
+git clone https://github.com/Abhinandan305/Fraud-Detection
 cd "Fraud Detection"
 ```
 
