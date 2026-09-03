@@ -20,7 +20,7 @@ fraud_detection_project/
 
 ### 1. Clone the Repository
 ```bash
-git clone <your-repo-url>
+git clone <https://github.com/Abhinandan305/Fraud-Detection>
 cd "Fraud Detection"
 ```
 
@@ -50,13 +50,3 @@ streamlit run app.py
 - **Imbalance Handling**: SMOTE (Synthetic Minority Over-sampling Technique).
 - **Scaling**: Standard Scaling for `Time` and `Amount`.
 - **Evaluation**: Focused on Precision-Recall curves and AUPRC due to extreme class imbalance.
-
-## ☁️ Deployment to Streamlit Community Cloud
-
-1. **GitHub Repository**: Push your code to a GitHub repository.
-   - Make sure to include `requirements.txt` and the `models/` folder (contain `fraud_model.joblib` and `scaler.joblib`).
-2. **Connect to Streamlit**:
-   - Go to [share.streamlit.io](https://share.streamlit.io).
-   - Log in with GitHub.
-   - Click **"Create app"** $\rightarrow$ Select your repo $\rightarrow$ Main file path: `app.py`.
-3. **Launch**: Streamlit will automatically install dependencies from `requirements.txt` and deploy your app.
