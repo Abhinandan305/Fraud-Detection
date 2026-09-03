@@ -22,9 +22,15 @@ def load_data():
 
 try:
     model, scaler = load_artifacts()
-    df = load_data()
+    # Try to load data, but don't crash if it's missing
+    try:
+        df = load_data()
+        data_available = True
+    except Exception:
+        df = None
+        data_available = False
 except Exception as e:
-    st.error(f"Error loading artifacts: {e}. Please run src/train_pipeline.py first.")
+    st.error(f"Critical Error: Could not load model artifacts: {e}. Please run src/train_pipeline.py first.")
     st.stop()
 
 # Title and Description
@@ -88,30 +94,33 @@ with col1:
 with col2:
     st.subheader("Analysis")
 
-    # Visualization: Amount Distribution
-    st.markdown("**Amount Distribution**")
-    fig, ax = plt.subplots()
-    sns.histplot(df['Amount'], bins=50, kde=True, ax=ax, color='blue')
-    ax.axvline(input_df['Amount'][0], color='red', linestyle='--', label='User Input')
-    ax.set_title("Transaction Amount Distribution")
-    ax.legend()
-    st.pyplot(fig)
+    if data_available:
+        # Visualization: Amount Distribution
+        st.markdown("**Amount Distribution**")
+        fig, ax = plt.subplots()
+        sns.histplot(df['Amount'], bins=50, kde=True, ax=ax, color='blue')
+        ax.axvline(input_df['Amount'][0], color='red', linestyle='--', label='User Input')
+        ax.set_title("Transaction Amount Distribution")
+        ax.legend()
+        st.pyplot(fig)
 
-    # Visualization: Feature Comparison (simplified)
-    st.markdown("**Feature Analysis (V1-V5)**")
-    # Compare user input to mean of legit and fraud
-    v_cols = ['V1', 'V2', 'V3', 'V4', 'V5']
-    mean_legit = df[df['Class'] == 0][v_cols].mean()
-    mean_fraud = df[df['Class'] == 1][v_cols].mean()
-    user_vals = input_df[v_cols].iloc[0]
+        # Visualization: Feature Comparison (simplified)
+        st.markdown("**Feature Analysis (V1-V5)**")
+        # Compare user input to mean of legit and fraud
+        v_cols = ['V1', 'V2', 'V3', 'V4', 'V5']
+        mean_legit = df[df['Class'] == 0][v_cols].mean()
+        mean_fraud = df[df['Class'] == 1][v_cols].mean()
+        user_vals = input_df[v_cols].iloc[0]
 
-    comp_df = pd.DataFrame({
-        'Legitimate (Avg)': mean_legit,
-        'Fraudulent (Avg)': mean_fraud,
-        'User Input': user_vals
-    })
+        comp_df = pd.DataFrame({
+            'Legitimate (Avg)': mean_legit,
+            'Fraudulent (Avg)': mean_fraud,
+            'User Input': user_vals
+        })
 
-    st.bar_chart(comp_df)
+        st.bar_chart(comp_df)
+    else:
+        st.warning("Dataset not found. Visualizations are disabled, but predictions will still work.")
 
 # Footer
 st.markdown("---")
